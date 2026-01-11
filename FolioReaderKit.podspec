@@ -22,6 +22,10 @@ Pod::Spec.new do |s|
     'Source/**/*.swift',
     'Vendor/**/*.swift',
   ]
+  s.exclude_files = [
+    'Vendor/ZFDragableModalTransition/**/*',
+    'Vendor/JSQWebViewController/**/*'
+  ]
   s.resources = [
     'Source/**/*.{js,css}',
     'Source/Resources/*.xcassets',

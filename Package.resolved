@@ -1,0 +1,60 @@
+{
+  "originHash" : "dbd70704c6b7d65cbca13853e9cc60a393c9b03566e1314e6c71467a6ec69cc3",
+  "pins" : [
+    {
+      "identity" : "aexml",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tadija/AEXML.git",
+      "state" : {
+        "revision" : "db806756c989760b35108146381535aec231092b",
+        "version" : "4.7.0"
+      }
+    },
+    {
+      "identity" : "fontblaster",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ArtSabintsev/FontBlaster.git",
+      "state" : {
+        "revision" : "09fffe9cf20293fce81ce7154b46f8e60291baa8",
+        "version" : "5.3.0"
+      }
+    },
+    {
+      "identity" : "menuitemkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/cxa/MenuItemKit.git",
+      "state" : {
+        "revision" : "3f832b3d2a6075e1e6b7db06c498dd710c773e6f",
+        "version" : "3.2.2"
+      }
+    },
+    {
+      "identity" : "realm-cocoa",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-cocoa.git",
+      "state" : {
+        "revision" : "40732f2ec0cdc32d9d3df8219b2e655deb3077f1",
+        "version" : "3.21.0"
+      }
+    },
+    {
+      "identity" : "realm-core",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-core",
+      "state" : {
+        "revision" : "512dfaa4f59930e193c92e00ba1924bde69b19de",
+        "version" : "5.23.5"
+      }
+    },
+    {
+      "identity" : "ziparchive",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ZipArchive/ZipArchive.git",
+      "state" : {
+        "revision" : "38e0ce0598e06b034271f296a8e15b149c91aa19",
+        "version" : "2.4.3"
+      }
+    }
+  ],
+  "version" : 3
+}
