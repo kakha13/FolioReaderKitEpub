@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import WebKit
 import ZFDragableModalTransition
 
 /// Protocol which is used from `FolioReaderCenter`s.
@@ -649,16 +650,19 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
         scrollScrubber?.setSliderVal()
 
-        if let readingTime = currentPage.webView?.js("getReadingTime()") {
-            pageIndicatorView?.totalMinutes = Int(readingTime)!
-        } else {
-            pageIndicatorView?.totalMinutes = 0
+        currentPage.webView?.js("getReadingTime()") { [weak self] readingTime in
+            guard let self = self else { return }
+            if let readingTime = readingTime, let minutes = Int(readingTime) {
+                self.pageIndicatorView?.totalMinutes = minutes
+            } else {
+                self.pageIndicatorView?.totalMinutes = 0
+            }
         }
         pagesForCurrentPage(currentPage)
 
         delegate?.pageDidAppear?(currentPage)
         delegate?.pageItemChanged?(self.getCurrentPageItemNumber())
-        
+
         completion?()
     }
 
@@ -1075,9 +1079,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     @objc func shareChapter(_ sender: UIBarButtonItem) {
         guard let currentPage = currentPage else { return }
 
-        if let chapterText = currentPage.webView?.js("getBodyText()") {
+        currentPage.webView?.js("getBodyText()") { [weak self] chapterText in
+            guard let self = self, let chapterText = chapterText else { return }
+
             let htmlText = chapterText.replacingOccurrences(of: "[\\n\\r]+", with: "<br />", options: .regularExpression)
-            var subject = readerConfig.localizedShareChapterSubject
+            var subject = self.readerConfig.localizedShareChapterSubject
             var html = ""
             var text = ""
             var bookTitle = ""
@@ -1088,11 +1094,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             // Get book title
             if let title = self.book.title {
                 bookTitle = title
-                subject += " “\(title)”"
+                subject += " \u{201C}\(title)\u{201D}"
             }
 
             // Get chapter name
-            if let chapter = getCurrentChapterName() {
+            if let chapter = self.getCurrentChapterName() {
                 chapterName = chapter
             }
 
@@ -1104,17 +1110,17 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             // Sharing html and text
             html = "<html><body>"
             html += "<br /><hr> <p>\(htmlText)</p> <hr><br />"
-            html += "<center><p style=\"color:gray\">"+readerConfig.localizedShareAllExcerptsFrom+"</p>"
+            html += "<center><p style=\"color:gray\">"+self.readerConfig.localizedShareAllExcerptsFrom+"</p>"
             html += "<b>\(bookTitle)</b><br />"
-            html += readerConfig.localizedShareBy+" <i>\(authorName)</i><br />"
+            html += self.readerConfig.localizedShareBy+" <i>\(authorName)</i><br />"
 
-            if let bookShareLink = readerConfig.localizedShareWebLink {
+            if let bookShareLink = self.readerConfig.localizedShareWebLink {
                 html += "<a href=\"\(bookShareLink.absoluteString)\">\(bookShareLink.absoluteString)</a>"
                 shareItems.append(bookShareLink as AnyObject)
             }
 
             html += "</center></body></html>"
-            text = "\(chapterName)\n\n“\(chapterText)” \n\n\(bookTitle) \n\(readerConfig.localizedShareBy) \(authorName)"
+            text = "\(chapterName)\n\n\u{201C}\(chapterText)\u{201D} \n\n\(bookTitle) \n\(self.readerConfig.localizedShareBy) \(authorName)"
 
             let act = FolioReaderSharingProvider(subject: subject, text: text, html: html)
             shareItems.insert(contentsOf: [act, "" as AnyObject], at: 0)
@@ -1127,7 +1133,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
                 actv.barButtonItem = sender
             }
 
-            present(activityViewController, animated: true, completion: nil)
+            self.present(activityViewController, animated: true, completion: nil)
         }
     }
 
@@ -1281,7 +1287,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         // Perform the page after a short delay as the collection view hasn't completed it's transition if this method is called (the index paths aren't right during fast scrolls).
         delay(0.2, closure: { [weak self] in
             if (self?.readerConfig.scrollDirection == .horizontalWithVerticalContent),
-                let cell = ((scrollView.superview as? UIWebView)?.delegate as? FolioReaderPage) {
+                let cell = ((scrollView.superview as? WKWebView)?.navigationDelegate as? FolioReaderPage) {
                 let currentIndexPathRow = cell.pageNumber - 1
                 self?.currentWebViewScrollPositions[currentIndexPathRow] = scrollView.contentOffset
             }

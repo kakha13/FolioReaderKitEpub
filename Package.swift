@@ -3,6 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "FolioReaderKit",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v12),
         .macOS(.v10_15)
@@ -39,11 +40,15 @@ let package = Package(
                 "Source/FolioReaderKit.h",
                 "Example",
                 "Vendor/ZFDragableModalTransition",
-                "Vendor/JSQWebViewController"
+                "Vendor/JSQWebViewController",
+                "demo-nativescript",
+                "docs",
+                "FolioReaderKitTests"
             ],
             sources: [
                 "Source",
-                "Vendor"
+                "Vendor/HAControls",
+                "Vendor/SMSegmentView"
             ],
             resources: [
                 .process("Source/Resources")

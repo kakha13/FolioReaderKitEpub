@@ -12,7 +12,7 @@ import Quick
 import Nimble
 
 class FolioReaderTests: QuickSpec {
-    override func spec() {
+    override class func spec() {
         context("epub parsing") {
             var subject: FREpubParser!
             var epubPath: String!

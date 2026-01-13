@@ -12,21 +12,21 @@ import Quick
 import Nimble
 
 class SharingProviderTests: QuickSpec {
-    override func spec() {
+    override class func spec() {
         var subject: FolioReaderSharingProvider!
 
         context("when sharing a document") {
             let activityViewController = UIActivityViewController(activityItems: [], applicationActivities: nil)
 
             it("sets the subject field") {
-                subject = self.providerWithHTML()
+                subject = providerWithHTML()
                 let subjectForActivityType = subject.activityViewController(activityViewController, subjectForActivityType: nil)
                 expect(subjectForActivityType).to(equal(subject.subject))
             }
 
             context("without HTML") {
                 beforeEach {
-                    subject = self.providerWithoutHTML()
+                    subject = providerWithoutHTML()
                 }
 
                 it("returns text for a mail activity") {
@@ -37,7 +37,7 @@ class SharingProviderTests: QuickSpec {
 
             context("with HTML") {
                 beforeEach {
-                    subject = self.providerWithHTML()
+                    subject = providerWithHTML()
                 }
 
                 it("returns HTML for a mail activity") {
@@ -48,12 +48,11 @@ class SharingProviderTests: QuickSpec {
         }
     }
 
-    func providerWithHTML() -> FolioReaderSharingProvider {
+    class func providerWithHTML() -> FolioReaderSharingProvider {
         return FolioReaderSharingProvider(subject: "a subject", text: "some text", html: "<html><body>foo</body></html>")
     }
 
-    func providerWithoutHTML() -> FolioReaderSharingProvider {
+    class func providerWithoutHTML() -> FolioReaderSharingProvider {
         return FolioReaderSharingProvider(subject: "a subject", text: "some text", html: nil)
     }
 }
-
