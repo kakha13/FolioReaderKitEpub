@@ -474,8 +474,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         let cssTag = "<link rel=\"stylesheet\" type=\"text/css\" href=\"\(cssFilePath!)\">"
         let jsTag = "<script type=\"text/javascript\" src=\"\(jsFilePath!)\"></script>" +
         "<script type=\"text/javascript\">setMediaOverlayStyleColors(\(mediaOverlayStyleColors))</script>"
+        
+        // Add viewport meta tag to prevent scaling issues with WKWebView
+        let viewportTag = "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\">"
 
-        let toInject = "\n\(cssTag)\n\(jsTag)\n</head>"
+        let toInject = "\n\(viewportTag)\n\(cssTag)\n\(jsTag)\n</head>"
         html = html.replacingOccurrences(of: "</head>", with: toInject)
 
         // Font class name
@@ -497,7 +500,10 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             html = modifiedHtmlContent
         }
 
-        cell.loadHTMLString(html, baseURL: URL(fileURLWithPath: resource.fullHref.deletingLastPathComponent))
+        // Ensure baseURL is an absolute file URL for proper image loading in production
+        let basePath = resource.fullHref.deletingLastPathComponent
+        let baseURL = URL(fileURLWithPath: basePath, isDirectory: true)
+        cell.loadHTMLString(html, baseURL: baseURL)
         return cell
     }
 

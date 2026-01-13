@@ -83,7 +83,7 @@ open class FolioReaderContainer: UIViewController {
         self.folioReader.register(defaults: [
             kCurrentFontFamily: FolioReaderFont.andada.rawValue,
             kNightMode: false,
-            kCurrentFontSize: 2,
+            kCurrentFontSize: 4,
             kCurrentAudioRate: 1,
             kCurrentHighlightStyle: 0,
             kCurrentTOCMenu: 0,

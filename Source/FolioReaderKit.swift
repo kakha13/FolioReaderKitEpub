@@ -224,13 +224,13 @@ extension FolioReader {
         }
     }
 
-    /// Check current font size. Default .m
+    /// Check current font size. Default .xl
     open var currentFontSize: FolioReaderFontSize {
         get {
             guard
                 let rawValue = self.defaults.value(forKey: kCurrentFontSize) as? Int,
                 let size = FolioReaderFontSize(rawValue: rawValue) else {
-                    return .m
+                    return .xl
             }
 
             return size
